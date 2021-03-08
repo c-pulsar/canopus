@@ -1,8 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
-import RootNavigation from './components/RootNavigation';
+import RootNavigation from './Components/RootNavigation';
+import { FetchHttpClient } from './RestClient/FetchHttpClient';
+import { RestClient } from './RestClient/RestClient';
 
 function App() {
+
+  const httpClient = FetchHttpClient;
+
+  var restClient = RestClient(httpClient, {});
+
+  //restClient.get
+
+  
+
   return (
     <div className="App">
       <RootNavigation/>
