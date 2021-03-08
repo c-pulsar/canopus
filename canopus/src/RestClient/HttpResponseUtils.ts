@@ -1,4 +1,5 @@
 import { HttpMethod, HttpResponse } from "./HttpClient";
+import { Representation } from "./Representation";
 
 export class HttpResponseError extends Error {
   constructor(
@@ -33,10 +34,14 @@ export function validateBody(response: HttpResponse): HttpResponse {
   return response;
 }
 
-export function makeRepresentation(response: HttpResponse) {
+export function makeRepresentation(response: HttpResponse): Representation {
   const representation = parseJsonResponse(response);
   if (!representation._links) {
-    throw new Error(`${response.requestVerb} '${response.requestUri}' response has no links`);
+    throw new Error(`${response.requestVerb} '${response.requestUri}' response representation has no links`);
+  }
+
+  if (!representation._type) {
+    throw new Error(`${response.requestVerb} '${response.requestUri}' response representation has no type`);
   }
 
   return representation;

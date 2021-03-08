@@ -6,19 +6,21 @@ import { RestClient } from './RestClient/RestClient';
 
 function App() {
 
-  const httpClient = FetchHttpClient;
+  const httpClient = new FetchHttpClient();
+  var restClient = new RestClient(
+    httpClient, {
+    bearerToken: "", 
+    onAuthFailed: op => Promise.resolve(true)
+  });
 
-  //httpClient.
+  var rootUri = "http://localhost:3010/";
 
-  //var restClient = RestClient(httpClient, {});
+  restClient.get(rootUri).then(x => console.log(x));
 
-  //restClient.get
-
-  
 
   return (
     <div className="App">
-      <RootNavigation/>
+      <RootNavigation />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>

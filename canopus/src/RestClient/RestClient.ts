@@ -1,6 +1,7 @@
 import { AuthOptions, HttpAuthHandler } from "./HttpAuthHandler";
 import { HttpClient } from "./HttpClient";
 import { makeRepresentation, validateBody, validateStatus } from "./HttpResponseUtils";
+import { Representation } from "./Representation";
 
 export class RestClient {
 
@@ -10,7 +11,7 @@ export class RestClient {
     this.authHandler = new HttpAuthHandler(httpClient, options);
   }
 
-  get(uri: string) : Promise<any> {
+  get(uri: string) : Promise<Representation> {
       return this.authHandler
         .get(uri)
         .then(validateStatus)
