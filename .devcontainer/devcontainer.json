@@ -1,0 +1,13 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+  "name": "canopus dev container",
+  "dockerComposeFile": [
+    "../.dev/docker-compose.yml"
+  ],
+  "service": "canopus",
+  "workspaceFolder": "/app",
+  "extensions": [
+    "eamodio.gitlens"
+  ],
+  "shutdownAction": "stopCompose"
+}

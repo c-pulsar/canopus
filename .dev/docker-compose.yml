@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  canopus:
+    image: canopus-dev
+    build:
+       context: .
+       dockerfile: Dockerfile
+    container_name: canopus-dev
+    working_dir: /app 
+    ports: 
+      - 3011:3011
+    volumes:
+      - ..:/app
+    command: sleep infinity
+    environment: 
+      - TEST=Development
