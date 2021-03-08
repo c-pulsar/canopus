@@ -1,9 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
+import RootNavigation from './components/RootNavigation';
 
 function App() {
   return (
     <div className="App">
+      <RootNavigation/>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
