@@ -8,7 +8,9 @@ function App() {
 
   const httpClient = FetchHttpClient;
 
-  var restClient = RestClient(httpClient, {});
+  //httpClient.
+
+  //var restClient = RestClient(httpClient, {});
 
   //restClient.get
 
