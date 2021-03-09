@@ -3,6 +3,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
+import Button from "react-bootstrap/Button";
 import { RepresentationCollection } from "../RestClient/Representation";
 
 interface RepresentationCollectionViewProps {
@@ -18,6 +20,15 @@ class RepresentationCollectionView extends React.Component<RepresentationCollect
           <p className="text-white bg-dark">
             {this.props.collection._title}
           </p>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <ButtonGroup>
+            {
+              this.props.collection._links.map(x =><Button variant="outline-secondary" key={x.href}>{x.title}</Button>)
+            }
+          </ButtonGroup>
         </Col>
       </Row>
       <Row className="text-center">
