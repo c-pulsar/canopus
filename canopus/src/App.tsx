@@ -2,7 +2,6 @@ import React from "react";
 import { Representation } from "./RestClient/Representation";
 
 import './App.css';
-import { RestClient } from "./RestClient/RestClient";
 import RootContainer from "./Components/RootContainer";
 import { RestApi } from "./RestClient/RestApi";
 
@@ -17,12 +16,11 @@ interface AppProps {
 
 class App extends React.Component<AppProps, AppState> {
 
-  // Before the component mounts, we initialise our state
-  componentWillMount() {
+  constructor(props: AppProps) {
+    super(props);
     this.setState({ rootRepresentation: undefined });
   }
 
-  // After the component did mount, we load api root
   componentDidMount() {
     this.props.api
       .get(this.props.rootUri)
@@ -30,11 +28,13 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   render() {
-    if (!this.state.rootRepresentation) {
-      return <div className="App">Loading API...</div>;
+    if (this.state && this.state.rootRepresentation) {
+      return <RootContainer
+        api={this.props.api}
+        rootRepresentation={this.state.rootRepresentation} />
     }
 
-    return <RootContainer rootRepresentation={this.state.rootRepresentation} />
+    return <div className="App">Loading API...</div>;
   }
 }
 
