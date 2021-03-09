@@ -9,14 +9,18 @@ interface RootContainerProps {
 
 class RootContainer extends React.Component<RootContainerProps> {
 
+  handleSelect = (eventKey: string | null) => alert(`selected ${eventKey}`);
+
   render() {
     return (
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Brand href="#home">{this.props.rootRepresentation._title}</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            {this.props.rootRepresentation._links.map(x => <Nav.Link href={`#${x.rel}`}>{x.title}</Nav.Link>)}
+          <Nav className="mr-auto" onSelect={this.handleSelect}> {
+            this.props.rootRepresentation._links.map(x =>
+              <Nav.Link eventKey={x.rel} href={`#${x.rel}`}>{x.title}</Nav.Link>)
+          }
           </Nav>
         </Navbar.Collapse>
       </Navbar>
