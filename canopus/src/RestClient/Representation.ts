@@ -10,8 +10,13 @@ export interface Representation {
   _title: string
 }
 
+export interface RepresentationCollectionItem {
+  href: string,
+  title: string
+}
+
 export interface RepresentationCollection extends Representation {
-  _items: any[]
+  _items: RepresentationCollectionItem[]
 }
 
 export function collectionOrUndefined(representation: Representation) : RepresentationCollection | undefined {
