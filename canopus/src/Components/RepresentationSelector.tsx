@@ -1,6 +1,7 @@
 import React from "react";
 import { collectionOrUndefined, Representation } from "../RestClient/Representation";
 import RepresentationCollectionView from "./RepresentationCollectionView";
+import RepresentationView from "./RepresentationView";
 
 interface RepresentationSelectorProps {
   representation: Representation
@@ -15,7 +16,7 @@ class RepresentationSelector extends React.Component<RepresentationSelectorProps
       return <RepresentationCollectionView collection={collection} />;
     }
 
-    return <div>Selected Representation# {this.props.representation._title}</div>;
+    return <RepresentationView representation={this.props.representation} />
   }
 }
 
