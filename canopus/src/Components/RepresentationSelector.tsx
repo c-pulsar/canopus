@@ -1,15 +1,20 @@
 import React from "react";
-import { Representation } from "../RestClient/Representation";
+import { collectionOrUndefined, Representation } from "../RestClient/Representation";
 
 interface RepresentationSelectorProps {
   representation: Representation
 }
 
 class RepresentationSelector extends React.Component<RepresentationSelectorProps> {
+  
   render() {
-    switch (this.props.representation._type) { 
-      default : return <div>Selected Representation# {this.props.representation._title}</div>;
+    
+    var collection = collectionOrUndefined(this.props.representation);
+    if (collection) {
+      return <div>Selected Representation Collection# {collection._title}</div>;
     }
+    
+    return <div>Selected Representation# {this.props.representation._title}</div>;
   }
 }
 
