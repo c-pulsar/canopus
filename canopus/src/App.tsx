@@ -1,42 +1,52 @@
-import logo from './logo.svg';
+import React from "react";
+import { Representation } from "./RestClient/Representation";
+
 import './App.css';
-import RootNavigation from './Components/RootNavigation';
-import { FetchHttpClient } from './RestClient/FetchHttpClient';
-import { RestClient } from './RestClient/RestClient';
+import { FetchHttpClient } from "./RestClient/FetchHttpClient";
+import { RestClient } from "./RestClient/RestClient";
+import RootContainer from "./Components/RootContainer";
 
-function App() {
+type AppState = {
+  rootRepresentation?: Representation
+}
 
-  const httpClient = new FetchHttpClient();
-  var restClient = new RestClient(
-    httpClient, {
-    bearerToken: "", 
-    onAuthFailed: op => Promise.resolve(true)
-  });
+interface AppProps {
+  rootUri: string
+}
 
-  var rootUri = "http://localhost:3010/";
+class App extends React.Component<AppProps, AppState> {
 
-  restClient.get(rootUri).then(x => console.log(x));
+  private restClient: RestClient;
 
+  constructor(props: AppProps) {
+    super(props);
 
-  return (
-    <div className="App">
-      <RootNavigation />
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    var httpClient = new FetchHttpClient();
+    this.restClient = new RestClient(httpClient, {
+      bearerToken: "",
+      onAuthFailed: op => Promise.resolve(true)
+    });
+  }
+
+  // Before the component mounts, we initialise our state
+  componentWillMount() {
+    this.setState({ rootRepresentation: undefined });
+  }
+
+  // After the component did mount, we load api root
+  componentDidMount() {
+    this.restClient
+      .get(this.props.rootUri)
+      .then(x => this.setState({ rootRepresentation: x }));
+  }
+
+  render() {
+    if (!this.state.rootRepresentation) {
+      return <div className="App">Loading API...</div>;
+    }
+
+    return <RootContainer rootRepresentation={this.state.rootRepresentation} />
+  }
 }
 
 export default App;
