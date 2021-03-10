@@ -47,6 +47,10 @@ export function makeRepresentation(response: HttpResponse): Representation {
   return representation;
 }
 
+export function makeAny(response: HttpResponse): any {
+  return parseJsonResponse(response);
+}
+
 function parseJsonResponse(response: HttpResponse): any {
   try {
     return JSON.parse(response.bodyText);

@@ -28,8 +28,6 @@ class RootContainer extends React.Component<RootContainerProps, RootContainerSta
     this.setState({ selectedRepresentation: this.props.rootRepresentation });
   }
 
-  //handleSelect = (eventKey: string | null) => alert(`selected ${eventKey}`);
-
   handleSelect = (uri: string | null) => {
     if (uri) {
       this.props.api.get(uri).then(x => this.setState({ selectedRepresentation: x }));
@@ -59,7 +57,7 @@ class RootContainer extends React.Component<RootContainerProps, RootContainerSta
             {
               this.state &&
               this.state.selectedRepresentation &&
-              <RepresentationSelector representation={this.state.selectedRepresentation} />
+              <RepresentationSelector api={this.props.api} representation={this.state.selectedRepresentation} />
             }
           </Col>
         </Row>

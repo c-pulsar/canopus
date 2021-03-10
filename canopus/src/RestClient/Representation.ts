@@ -7,7 +7,8 @@ export interface Link {
 export interface Representation {
   _links: Link[],
   _type: string,
-  _title: string
+  _title: string,
+  _schema: string
 }
 
 export interface RepresentationCollectionItem {

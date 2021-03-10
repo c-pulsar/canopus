@@ -28,6 +28,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   render() {
+    
     if (this.state && this.state.rootRepresentation) {
       return <RootContainer
         api={this.props.api}

@@ -1,6 +1,6 @@
 import { AuthOptions, HttpAuthHandler } from "./HttpAuthHandler";
 import { HttpClient } from "./HttpClient";
-import { makeRepresentation, validateBody, validateStatus } from "./HttpResponseUtils";
+import { makeAny, makeRepresentation, validateBody, validateStatus } from "./HttpResponseUtils";
 import { Representation } from "./Representation";
 import { RestApi } from "./RestApi";
 
@@ -21,11 +21,19 @@ export class RestClient implements RestApi {
     throw new Error(`Relation ${rel} not found`);
   }
 
-  get(uri: string) : Promise<Representation> {
-      return this.authHandler
-        .get(uri)
-        .then(validateStatus)
-        .then(validateBody)
-        .then(makeRepresentation);
+  getAny(uri: string): Promise<any> {
+    return this.authHandler
+      .get(uri)
+      .then(validateStatus)
+      .then(validateBody)
+      .then(makeAny);
+  }
+
+  get(uri: string): Promise<Representation> {
+    return this.authHandler
+      .get(uri)
+      .then(validateStatus)
+      .then(validateBody)
+      .then(makeRepresentation);
   }
 }
