@@ -53,7 +53,7 @@ class RootContainer extends React.Component<RootContainerProps, RootContainerSta
           </Col>
         </Row>
         <Row>
-          <Col>
+          <Col style={{display: "flex",justifyContent: "center",alignItems: "center"}}>
             {
               this.state &&
               this.state.selectedRepresentation &&
