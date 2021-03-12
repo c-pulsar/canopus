@@ -2,6 +2,7 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import { RepresentationCollection } from "../RestClient/Representation";
+import NavigationToolbar from "./NavigationToolbar";
 
 interface RepresentationCollectionViewProps {
   collection: RepresentationCollection,
@@ -15,11 +16,14 @@ class RepresentationCollectionView extends React.Component<RepresentationCollect
       this.props.onNavigate(uri);
     }
   };
-
+  
   render() {
     return (
       <Card border="secondary" bg="secondary" className="text-center" >
         <Card.Header as="h5">{this.props.collection._title}</Card.Header>
+        <NavigationToolbar 
+          links={this.props.collection._links} 
+          onNavigate={this.props.onNavigate} />
         <ListGroup className="list-group-flush" onSelect={this.handleSelect}>
           {
             this.props.collection._items.map(x =>

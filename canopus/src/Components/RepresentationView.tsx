@@ -4,6 +4,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 import { Representation } from "../RestClient/Representation";
 import { RestApi } from "../RestClient/RestApi";
+import NavigationToolbar from "./NavigationToolbar";
 
 type RepresentationViewState = {
   schema: any
@@ -11,6 +12,7 @@ type RepresentationViewState = {
 
 interface RepresentationViewProps {
   representation: Representation,
+  onNavigate: (uri: string) => void,
   api: RestApi
 }
 
@@ -65,6 +67,9 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
     return (
       <Card border="secondary" bg="secondary" className="text-center">
         <Card.Header as="h5">{this.props.representation._title}</Card.Header>
+        <NavigationToolbar 
+          links={this.props.representation._links} 
+          onNavigate={this.props.onNavigate} />
         <ListGroup className="list-group-flush">
           {
             this.state &&

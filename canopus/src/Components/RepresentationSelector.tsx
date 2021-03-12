@@ -16,10 +16,15 @@ class RepresentationSelector extends React.Component<RepresentationSelectorProps
 
     var collection = collectionOrUndefined(this.props.representation);
     if (collection) {
-      return <RepresentationCollectionView onNavigate={this.props.onNavigate} collection={collection} />;
+      return <RepresentationCollectionView 
+        onNavigate={this.props.onNavigate} 
+        collection={collection} />;
     }
 
-    return <RepresentationView api={this.props.api} representation={this.props.representation} />
+    return <RepresentationView 
+      api={this.props.api} 
+      onNavigate={this.props.onNavigate}
+      representation={this.props.representation} />
   }
 }
 
