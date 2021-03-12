@@ -3,7 +3,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
@@ -37,7 +36,10 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
 
   private stringProperty(propertyKey: string, propertySchema: any, value: string) {
     return (
-      <ListGroupItem><strong>{this.titleOrDefault(propertyKey, propertySchema)}:</strong> {value}</ListGroupItem>
+      <ListGroupItem>
+        {this.titleOrDefault(propertyKey, propertySchema)}:
+        <span>{value}</span>
+      </ListGroupItem>
     );
   }
 
@@ -64,9 +66,9 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
 
   render() {
     return (
-      <Card className="text-center" style={{ width: '18rem' }}>
+      <Card border="secondary" bg="secondary" className="text-center">
         <Card.Header as="h5">{this.props.representation._title}</Card.Header>
-        <ListGroup className="text-left list-group-flush">
+        <ListGroup className="list-group-flush">
           {
             this.state &&
             this.state.schema &&

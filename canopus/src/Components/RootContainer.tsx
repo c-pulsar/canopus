@@ -39,7 +39,7 @@ class RootContainer extends React.Component<RootContainerProps, RootContainerSta
       <Container fluid>
         <Row>
           <Col>
-            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+            <Navbar collapseOnSelect expand="lg" bg="secondary">
               <Navbar.Brand href="#home">{this.props.rootRepresentation._title}</Navbar.Brand>
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
@@ -52,8 +52,9 @@ class RootContainer extends React.Component<RootContainerProps, RootContainerSta
             </Navbar>
           </Col>
         </Row>
+        <Row><Col><p></p></Col></Row>
         <Row>
-          <Col style={{display: "flex",justifyContent: "center",alignItems: "center"}}>
+          <Col style={{ justifyContent: "center",alignItems: "center"}}>
             {
               this.state &&
               this.state.selectedRepresentation &&
