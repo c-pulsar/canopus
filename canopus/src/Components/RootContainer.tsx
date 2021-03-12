@@ -30,9 +30,16 @@ class RootContainer extends React.Component<RootContainerProps, RootContainerSta
 
   handleSelect = (uri: string | null) => {
     if (uri) {
-      this.props.api.get(uri).then(x => this.setState({ selectedRepresentation: x }));
+      this.navigate(uri);
     }
   };
+
+  navigate = (uri: string) => {
+    this.setState({ selectedRepresentation: undefined });
+    this.props.api
+      .get(uri)
+      .then(x => this.setState({ selectedRepresentation: x }));
+  }
 
   render() {
     return (
@@ -54,11 +61,14 @@ class RootContainer extends React.Component<RootContainerProps, RootContainerSta
         </Row>
         <Row><Col><p></p></Col></Row>
         <Row>
-          <Col style={{ justifyContent: "center",alignItems: "center"}}>
+          <Col style={{ justifyContent: "center", alignItems: "center" }}>
             {
               this.state &&
               this.state.selectedRepresentation &&
-              <RepresentationSelector api={this.props.api} representation={this.state.selectedRepresentation} />
+              <RepresentationSelector
+                api={this.props.api}
+                onNavigate={this.navigate}
+                representation={this.state.selectedRepresentation} />
             }
           </Col>
         </Row>

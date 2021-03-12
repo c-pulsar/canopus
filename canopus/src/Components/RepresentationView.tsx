@@ -1,9 +1,5 @@
 import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/ListGroupItem";
 import { Representation } from "../RestClient/Representation";
@@ -37,8 +33,9 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
   private stringProperty(propertyKey: string, propertySchema: any, value: string) {
     return (
       <ListGroupItem>
-        {this.titleOrDefault(propertyKey, propertySchema)}:
-        <span>{value}</span>
+        <span className="text-muted">{this.titleOrDefault(propertyKey, propertySchema)}</span>
+        <span> : </span>
+        <span className="text-muted">{value}</span>
       </ListGroupItem>
     );
   }
@@ -78,39 +75,6 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
       </Card>
     );
   }
-
-  // render2() {
-  //   return <Container fluid>
-  //     <Row className="text-center">
-  //       <Col>
-  //         <p className="text-white bg-dark">
-  //           {this.props.representation._title}
-  //         </p>
-  //       </Col>
-  //     </Row>
-  //     <Row>
-  //       <Col>
-  //         <ButtonGroup>
-  //           {
-  //             this.props.representation._links.map(x => <Button variant="outline-secondary" key={x.href}>{x.title}</Button>)
-  //           }
-  //         </ButtonGroup>
-  //       </Col>
-  //     </Row>
-  //     <Row>
-  //       <Col className="text-center">
-  //         <Container>
-  //           {
-  //             this.state &&
-  //             this.state.schema &&
-  //             this.getFields()
-  //             // <p>{JSON.stringify(this.state.schema)}</p>
-  //           }
-  //         </Container>
-  //       </Col>
-  //     </Row>
-  //   </Container>;
-  // }
 }
 
 export default RepresentationView;

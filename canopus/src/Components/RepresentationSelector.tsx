@@ -6,6 +6,7 @@ import RepresentationView from "./RepresentationView";
 
 interface RepresentationSelectorProps {
   representation: Representation,
+  onNavigate: (uri: string) => void,
   api: RestApi
 }
 
@@ -15,7 +16,7 @@ class RepresentationSelector extends React.Component<RepresentationSelectorProps
 
     var collection = collectionOrUndefined(this.props.representation);
     if (collection) {
-      return <RepresentationCollectionView collection={collection} />;
+      return <RepresentationCollectionView onNavigate={this.props.onNavigate} collection={collection} />;
     }
 
     return <RepresentationView api={this.props.api} representation={this.props.representation} />
