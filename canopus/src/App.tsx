@@ -3,6 +3,8 @@ import { Representation } from "./RestClient/Representation";
 import RootContainer from "./Components/RootContainer";
 import { RestApi } from "./RestClient/RestApi";
 
+import "./custom.scss";
+
 type AppState = {
   rootRepresentation?: Representation
 }
