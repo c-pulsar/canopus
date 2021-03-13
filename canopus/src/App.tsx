@@ -1,7 +1,5 @@
 import React from "react";
 import { Representation } from "./RestClient/Representation";
-
-import './App.css';
 import RootContainer from "./Components/RootContainer";
 import { RestApi } from "./RestClient/RestApi";
 

@@ -19,7 +19,7 @@ class RepresentationCollectionView extends React.Component<RepresentationCollect
 
   render() {
     return (
-      <Card border="secondary" bg="secondary" className="text-center" >
+      <Card border="primary" bg="primary" className="text-center" >
         <Card.Header as="h5">{this.props.collection._title}</Card.Header>
         <NavigationToolbar 
           links={this.props.collection._links} 
@@ -27,7 +27,7 @@ class RepresentationCollectionView extends React.Component<RepresentationCollect
         <ListGroup className="list-group-flush" onSelect={this.handleSelect}>
           {
             this.props.collection._items.map(x =>
-              <ListGroup.Item href={`#${x.title}`} action eventKey={x.href} variant="secondary">
+              <ListGroup.Item href={`#${x.title}`} action eventKey={x.href} variant="primary">
                 {x.title}
               </ListGroup.Item>)
           }

@@ -34,11 +34,11 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
 
   private stringProperty(propertyKey: string, propertySchema: any, value: string) {
     return (
-      <ListGroupItem>
+      <ListGroup.Item variant="primary">
         <span className="text-muted">{this.titleOrDefault(propertyKey, propertySchema)}</span>
         <span> : </span>
         <span className="text-muted">{value}</span>
-      </ListGroupItem>
+      </ListGroup.Item>
     );
   }
 
@@ -65,7 +65,7 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
 
   render() {
     return (
-      <Card border="secondary" bg="secondary" className="text-center">
+      <Card border="primary" bg="primary" className="text-center">
         <Card.Header as="h5">{this.props.representation._title}</Card.Header>
         <NavigationToolbar 
           links={this.props.representation._links} 
