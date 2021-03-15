@@ -8,7 +8,8 @@ import Ajv from "ajv";
 
 
 type CreateFormRepresentationViewState = {
-  schema: any
+  schema: any,
+  validationErrors: any
 }
 
 interface CreateFormRepresentationViewProps {
@@ -40,12 +41,35 @@ class CreateFormRepresentationView extends React.Component<
     return propertyKey;
   }
 
+  private getPropertyValidationErrors(propertyKey: string): string[] | undefined {
+    
+    if (this.state && this.state.validationErrors) {
+       return this.state.validationErrors[propertyKey];
+    }
+
+    return undefined;
+  }
+
   private stringProperty(propertyKey: string, propertySchema: any) {
+
+    let validationErrors = this.getPropertyValidationErrors(propertyKey);   
+
     return (
       <Form.Group controlId={propertyKey} key={propertyKey} >
         <Form.Label className="text-primary">{this.titleOrDefault(propertyKey, propertySchema)}</Form.Label>
-        <Form.Control name={propertyKey} type="text" isInvalid={false} />
-        <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+        {
+          validationErrors 
+          ? validationErrors.length > 0 
+            ?  <>
+                 <Form.Control name={propertyKey} type="text" isInvalid />  
+                 {
+                   validationErrors.map(x => <Form.Control.Feedback type="invalid">{x}</Form.Control.Feedback>)
+                 }
+               </>
+            :  <Form.Control name={propertyKey} type="text" isValid />
+          : <Form.Control name={propertyKey} type="text" />
+        }
+
       </Form.Group>
     );
   }
@@ -86,10 +110,13 @@ class CreateFormRepresentationView extends React.Component<
         .then(location => this.props.onNavigate(location!));
     } else {
       validate.errors!.forEach(error => {
-        //var form = event.target as Form;
-        //event.currentTarget.
-        
-        alert("error: " + error.dataPath);
+        var el = event.currentTarget["searchText"];
+        if (el) {
+          //el.classList.add("is-invalid");
+          this.setState({ ...this.state.schema, validationErrors: { searchText: [ error.message ] } });
+        }
+
+        //alert("error: " + error.dataPath + " => " + error.message);
         //alert('nope: ' + JSON.stringify(validate.errors));  
       });
     }
