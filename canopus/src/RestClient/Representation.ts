@@ -4,8 +4,7 @@ export interface Link {
   title: string
 }
 
-export enum RepresentationType 
-{
+export enum RepresentationType {
   Resource = "Resource",
   Collection = "Collection",
   EditForm = "EditForm",
@@ -29,9 +28,10 @@ export interface RepresentationCollection extends Representation {
 }
 
 export interface CreateFormRepresentation extends Representation {
+  _postLocation: string
 }
 
-export function collectionOrUndefined(representation: Representation) : RepresentationCollection | undefined {
+export function collectionOrUndefined(representation: Representation): RepresentationCollection | undefined {
   var collection = representation as RepresentationCollection;
   if (collection && collection._items && collection._type === RepresentationType.Collection) {
     return collection;
@@ -40,9 +40,9 @@ export function collectionOrUndefined(representation: Representation) : Represen
   return undefined;
 }
 
-export function createFormOrUndefined(representation: Representation) : CreateFormRepresentation | undefined {
+export function createFormOrUndefined(representation: Representation): CreateFormRepresentation | undefined {
   var createForm = representation as CreateFormRepresentation;
-  if (createForm && createForm._type === RepresentationType.CreateForm) {
+  if (createForm && createForm._type === RepresentationType.CreateForm && createForm._postLocation) {
     return createForm;
   }
 

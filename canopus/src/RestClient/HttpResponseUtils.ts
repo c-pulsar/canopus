@@ -26,6 +26,17 @@ export function validateStatus(response: HttpResponse): HttpResponse {
   throw new HttpResponseError(response.status, response.requestUri, response.requestVerb);
 }
 
+export function createdOrUndefined(response: HttpResponse): string | undefined {
+  if (response.status === 201) {
+    const location = response.headers.find(x => x.key.toLowerCase() === "location");
+    if (location) {
+      return location.value;
+    }
+  }
+
+  return undefined;
+}
+
 export function validateBody(response: HttpResponse): HttpResponse {
   if (!response.bodyText || response.bodyText.trim().length === 0) {
     throw new Error(`${response.requestVerb} '${response.requestUri}' response doesnt have any content`);

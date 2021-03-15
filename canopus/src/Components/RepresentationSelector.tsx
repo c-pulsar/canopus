@@ -27,7 +27,7 @@ class RepresentationSelector extends React.Component<RepresentationSelectorProps
       return <CreateFormRepresentationView
         api={this.props.api}
         onNavigate={this.props.onNavigate}
-        createFormRepresentation={createForm} />;
+        representation={createForm} />;
     }
 
     return <RepresentationView

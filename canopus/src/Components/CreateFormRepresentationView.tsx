@@ -1,16 +1,18 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import { Representation } from "../RestClient/Representation";
+import { CreateFormRepresentation } from "../RestClient/Representation";
 import { RestApi } from "../RestClient/RestApi";
 import NavigationToolbar from "./NavigationToolbar";
+import Ajv from "ajv";
+
 
 type CreateFormRepresentationViewState = {
   schema: any
 }
 
 interface CreateFormRepresentationViewProps {
-  createFormRepresentation: Representation,
+  representation: CreateFormRepresentation,
   onNavigate: (uri: string) => void,
   api: RestApi
 }
@@ -19,9 +21,14 @@ class CreateFormRepresentationView extends React.Component<
   CreateFormRepresentationViewProps,
   CreateFormRepresentationViewState> {
 
+  constructor(props: CreateFormRepresentationViewProps) {
+    super(props);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+  }
+
   componentDidMount() {
     this.props.api
-      .getAny(this.props.createFormRepresentation._schema)
+      .getAny(this.props.representation._schema)
       .then(x => this.setState({ schema: x }));
   }
 
@@ -61,14 +68,27 @@ class CreateFormRepresentationView extends React.Component<
     return undefined;
   }
 
-  onSubmit(event: any) {
+  private onFormSubmit(event: any) {
     event.preventDefault();
   
     const data = new FormData(event.target);
 
     const value = Object.fromEntries(data.entries());
 
-    alert(JSON.stringify(value));
+    const ajv = new Ajv();
+    const validate = ajv.compile(this.state.schema);
+
+    const isValid = validate(value);
+    if (isValid) {
+      this.props.api
+        .create(this.props.representation._postLocation, value)
+        .then(location => alert(location));
+      
+      //alert('Yeahh valid as!');
+    } else
+    {
+      alert('nope: ' + JSON.stringify(validate.errors));
+    }
   }
 
   //https://www.learnwithjason.dev/blog/get-form-values-as-json
@@ -76,12 +96,12 @@ class CreateFormRepresentationView extends React.Component<
 
     return (
       <Card border="primary" bg="primary" className="text-center">
-        <Card.Header as="h5">{this.props.createFormRepresentation._title}</Card.Header>
+        <Card.Header as="h5">{this.props.representation._title}</Card.Header>
         <NavigationToolbar
-          links={this.props.createFormRepresentation._links}
+          links={this.props.representation._links}
           onNavigate={this.props.onNavigate} />
 
-        <Form onSubmit={this.onSubmit} className="text-left">
+        <Form onSubmit={this.onFormSubmit} className="text-left">
           {
             this.state &&
             this.state.schema &&

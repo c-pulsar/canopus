@@ -1,6 +1,6 @@
 import { AuthOptions, HttpAuthHandler } from "./HttpAuthHandler";
 import { HttpClient } from "./HttpClient";
-import { makeAny, makeRepresentation, validateBody, validateStatus } from "./HttpResponseUtils";
+import { createdOrUndefined, makeAny, makeRepresentation, validateBody, validateStatus } from "./HttpResponseUtils";
 import { Representation } from "./Representation";
 import { RestApi } from "./RestApi";
 
@@ -35,5 +35,12 @@ export class RestClient implements RestApi {
       .then(validateStatus)
       .then(validateBody)
       .then(makeRepresentation);
+  }
+
+  create(uri: string, representation: any) : Promise<string | undefined> {
+    return this.authHandler
+      .post(uri, JSON.stringify(representation))
+      .then(validateStatus)
+      .then(createdOrUndefined);
   }
 }

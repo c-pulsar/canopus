@@ -10,6 +10,7 @@
     "@types/node": "^14.14.32",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.1",
+    "ajv": "^6.12.6",
     "bootstrap": "^4.6.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.1",
