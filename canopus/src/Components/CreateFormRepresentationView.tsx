@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, ButtonGroup, Col, Container, Form, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { CreateFormRepresentation } from "../RestClient/Representation";
 import { RestApi } from "../RestClient/RestApi";
@@ -43,7 +43,7 @@ class CreateFormRepresentationView extends React.Component<
   private stringProperty(propertyKey: string, propertySchema: any) {
     return (
       <Form.Group controlId={propertyKey} key={propertyKey} >
-        <Form.Label>{this.titleOrDefault(propertyKey, propertySchema)}</Form.Label>
+        <Form.Label className="text-primary">{this.titleOrDefault(propertyKey, propertySchema)}</Form.Label>
         <Form.Control name={propertyKey} type="text" />
       </Form.Group>
     );
@@ -70,7 +70,7 @@ class CreateFormRepresentationView extends React.Component<
 
   private onFormSubmit(event: any) {
     event.preventDefault();
-  
+
     const data = new FormData(event.target);
 
     const value = Object.fromEntries(data.entries());
@@ -82,11 +82,8 @@ class CreateFormRepresentationView extends React.Component<
     if (isValid) {
       this.props.api
         .create(this.props.representation._postLocation, value)
-        .then(location => alert(location));
-      
-      //alert('Yeahh valid as!');
-    } else
-    {
+        .then(location => this.props.onNavigate(location!));
+    } else {
       alert('nope: ' + JSON.stringify(validate.errors));
     }
   }
@@ -95,20 +92,39 @@ class CreateFormRepresentationView extends React.Component<
   render() {
 
     return (
-      <Card border="primary" bg="primary" className="text-center">
-        <Card.Header as="h5">{this.props.representation._title}</Card.Header>
+      <Card border="primary" bg="secondary" className="text-center">
+        <Card.Header className="bg-primary" as="h5">{this.props.representation._title}</Card.Header>
         <NavigationToolbar
           links={this.props.representation._links}
           onNavigate={this.props.onNavigate} />
 
-        <Form onSubmit={this.onFormSubmit} className="text-left">
-          {
-            this.state &&
-            this.state.schema &&
-            this.getFields()
-          }
-          <Button variant="primary" type="submit">Submit</Button>
-        </Form>
+        <Container>
+          <Row><Col><br /></Col></Row>
+          <Row>
+            <Col></Col>
+            <Col xs={6} >
+              <Form onSubmit={this.onFormSubmit} className="text-left">
+                {
+                  this.state &&
+                  this.state.schema &&
+                  this.getFields()
+                }
+                <Container>
+                  <Row className="text-center">
+                    <Col>
+                      <ButtonGroup>
+                        <Button variant="primary" type="submit" >Submit</Button>
+                        <Button variant="primary" type="button" onClick={window.history.back} >Cancel</Button>
+                      </ButtonGroup>
+                    </Col>
+                  </Row>
+                </Container>
+              </Form>
+            </Col>
+            <Col></Col>
+          </Row>
+          <Row><Col><br /></Col></Row>
+        </Container>
       </Card>
     );
   }

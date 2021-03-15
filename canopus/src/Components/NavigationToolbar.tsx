@@ -11,8 +11,8 @@ class NavigationToolbar extends React.Component<NavigationToolbarProps> {
 
   render() {
     return (
-      <Container>
-        <Row>
+      <Container fluid>
+        <Row className="bg-primary">
           <Col></Col>
           <Col>
             <ButtonGroup>
