@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent } from "react";
 import { Button, ButtonGroup, Col, Container, Form, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { CreateFormRepresentation } from "../RestClient/Representation";
@@ -44,7 +44,8 @@ class CreateFormRepresentationView extends React.Component<
     return (
       <Form.Group controlId={propertyKey} key={propertyKey} >
         <Form.Label className="text-primary">{this.titleOrDefault(propertyKey, propertySchema)}</Form.Label>
-        <Form.Control name={propertyKey} type="text" />
+        <Form.Control name={propertyKey} type="text" isInvalid={false} />
+        <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
       </Form.Group>
     );
   }
@@ -68,10 +69,10 @@ class CreateFormRepresentationView extends React.Component<
     return undefined;
   }
 
-  private onFormSubmit(event: any) {
+  private onFormSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const data = new FormData(event.target);
+    const data = new FormData(event.currentTarget);
 
     const value = Object.fromEntries(data.entries());
 
@@ -84,7 +85,13 @@ class CreateFormRepresentationView extends React.Component<
         .create(this.props.representation._postLocation, value)
         .then(location => this.props.onNavigate(location!));
     } else {
-      alert('nope: ' + JSON.stringify(validate.errors));
+      validate.errors!.forEach(error => {
+        //var form = event.target as Form;
+        //event.currentTarget.
+        
+        alert("error: " + error.dataPath);
+        //alert('nope: ' + JSON.stringify(validate.errors));  
+      });
     }
   }
 
