@@ -5,6 +5,8 @@ import { CreateFormRepresentation } from "../RestClient/Representation";
 import { RestApi } from "../RestClient/RestApi";
 import NavigationToolbar from "./NavigationToolbar";
 import Ajv from "ajv";
+import { PropertyDefinition, PropertyType } from "./PropertyDefinition";
+import { StringProperty } from "./StringProperty";
 
 
 type CreateFormRepresentationViewState = {
@@ -30,67 +32,37 @@ class CreateFormRepresentationView extends React.Component<
   componentDidMount() {
     this.props.api
       .getAny(this.props.representation._schema)
-      .then(x => this.setState({ schema: x }));
+      .then(x => this.setState({ schema: x, validationErrors: {}}));
   }
 
-  private titleOrDefault(propertyKey: string, propertySchema: any) {
-    if (propertySchema.title) {
-      return propertySchema.title;
-    }
+  private schemaProperties(schema: any, validationObject: any): JSX.Element[] {
 
-    return propertyKey;
-  }
+    var result = [];
 
-  private getPropertyValidationErrors(propertyKey: string): string[] | undefined {
-    
-    if (this.state && this.state.validationErrors) {
-       return this.state.validationErrors[propertyKey];
-    }
+    if (schema.properties) {
 
-    return undefined;
-  }
+      for (var key in schema.properties) {
+        var propertySchema = schema.properties[key];
+        if (propertySchema) {
+          var propertyDefinition = new PropertyDefinition(key, propertySchema);
+          switch (propertyDefinition.type()) {
 
-  private stringProperty(propertyKey: string, propertySchema: any) {
+            case PropertyType.String:
+              result.push(<StringProperty
+                propertyDefinition={propertyDefinition}
+                validationErrors={validationObject[key]} />);
+              break;
 
-    let validationErrors = this.getPropertyValidationErrors(propertyKey);   
-
-    return (
-      <Form.Group controlId={propertyKey} key={propertyKey} >
-        <Form.Label className="text-primary">{this.titleOrDefault(propertyKey, propertySchema)}</Form.Label>
-        {
-          validationErrors 
-          ? validationErrors.length > 0 
-            ?  <>
-                 <Form.Control name={propertyKey} type="text" isInvalid />  
-                 {
-                   validationErrors.map(x => <Form.Control.Feedback type="invalid">{x}</Form.Control.Feedback>)
-                 }
-               </>
-            :  <Form.Control name={propertyKey} type="text" isValid />
-          : <Form.Control name={propertyKey} type="text" />
-        }
-
-      </Form.Group>
-    );
-  }
-
-  private getFields() {
-
-    if (this.state.schema.properties) {
-
-      var result = [];
-
-      for (var key in this.state.schema.properties) {
-        var property = this.state.schema.properties[key];
-        if (property) {
-          result.push(this.stringProperty(key, property));
+            default:
+              result.push(<StringProperty
+                propertyDefinition={propertyDefinition} validationErrors={validationObject[key]} />);
+              break;
+          }
         }
       }
-
-      return result;
     }
 
-    return undefined;
+    return result;
   }
 
   private onFormSubmit(event: FormEvent<HTMLFormElement>) {
@@ -113,7 +85,7 @@ class CreateFormRepresentationView extends React.Component<
         var el = event.currentTarget["searchText"];
         if (el) {
           //el.classList.add("is-invalid");
-          this.setState({ ...this.state.schema, validationErrors: { searchText: [ error.message ] } });
+          this.setState({ ...this.state.schema, validationErrors: { searchText: [error.message] } });
         }
 
         //alert("error: " + error.dataPath + " => " + error.message);
@@ -141,7 +113,7 @@ class CreateFormRepresentationView extends React.Component<
                 {
                   this.state &&
                   this.state.schema &&
-                  this.getFields()
+                  this.schemaProperties(this.state.schema, this.state.validationErrors)
                 }
                 <Container>
                   <Row className="text-center">
