@@ -18,7 +18,7 @@ class NavigationToolbar extends React.Component<NavigationToolbarProps> {
             <ButtonGroup>
               {
                 this.props.links.map(x =>
-                  <Button href={`#${x.rel}`} variant="primary" onClick={() => this.props.onNavigate(x.href)}>
+                  <Button key={x.href} href={`#${x.rel}`} variant="primary" onClick={() => this.props.onNavigate(x.href)}>
                     {x.title}
                   </Button>)
               }

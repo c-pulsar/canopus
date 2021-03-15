@@ -27,7 +27,7 @@ class RepresentationCollectionView extends React.Component<RepresentationCollect
         <ListGroup className="list-group-flush" onSelect={this.handleSelect}>
           {
             this.props.collection._items.map(x =>
-              <ListGroup.Item href={`#${x.title}`} action eventKey={x.href} variant="primary">
+              <ListGroup.Item key={x.href} href={`#${x.title}`} action eventKey={x.href} variant="primary">
                 {x.title}
               </ListGroup.Item>)
           }

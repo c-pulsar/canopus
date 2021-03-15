@@ -1,7 +1,6 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
-import ListGroupItem from "react-bootstrap/ListGroupItem";
 import { Representation } from "../RestClient/Representation";
 import { RestApi } from "../RestClient/RestApi";
 import NavigationToolbar from "./NavigationToolbar";
@@ -34,7 +33,7 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
 
   private stringProperty(propertyKey: string, propertySchema: any, value: string) {
     return (
-      <ListGroup.Item variant="primary">
+      <ListGroup.Item key={propertyKey} variant="primary">
         <span className="text-muted">{this.titleOrDefault(propertyKey, propertySchema)}</span>
         <span> : </span>
         <span className="text-muted">{value}</span>

@@ -1,6 +1,7 @@
 import React from "react";
-import { collectionOrUndefined, Representation } from "../RestClient/Representation";
+import { collectionOrUndefined, createFormOrUndefined, Representation } from "../RestClient/Representation";
 import { RestApi } from "../RestClient/RestApi";
+import CreateFormRepresentationView from "./CreateFormRepresentationView";
 import RepresentationCollectionView from "./RepresentationCollectionView";
 import RepresentationView from "./RepresentationView";
 
@@ -16,13 +17,21 @@ class RepresentationSelector extends React.Component<RepresentationSelectorProps
 
     var collection = collectionOrUndefined(this.props.representation);
     if (collection) {
-      return <RepresentationCollectionView 
-        onNavigate={this.props.onNavigate} 
+      return <RepresentationCollectionView
+        onNavigate={this.props.onNavigate}
         collection={collection} />;
     }
 
-    return <RepresentationView 
-      api={this.props.api} 
+    var createForm = createFormOrUndefined(this.props.representation);
+    if (createForm) {
+      return <CreateFormRepresentationView
+        api={this.props.api}
+        onNavigate={this.props.onNavigate}
+        createFormRepresentation={createForm} />;
+    }
+
+    return <RepresentationView
+      api={this.props.api}
       onNavigate={this.props.onNavigate}
       representation={this.props.representation} />
   }
