@@ -43,4 +43,11 @@ export class RestClient implements RestApi {
       .then(validateStatus)
       .then(createdOrUndefined);
   }
+
+  update(uri: string, representation: any) : Promise<void> {
+    return this.authHandler
+      .post(uri, JSON.stringify(representation))
+      .then(validateStatus)
+      .then(() => Promise.resolve());
+  }
 }

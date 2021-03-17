@@ -7,10 +7,17 @@ $navbar-light-color: white;
 
 $card-cap-color: white;
 
+// green
 $theme-colors: (
   "primary": #55ab8c,
   "secondary": #cfe7df
 );
+
+// // yellow
+// $theme-colors: (
+//   "primary": #f08d0c,
+//   "secondary": #ebcfab
+// );
 
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
