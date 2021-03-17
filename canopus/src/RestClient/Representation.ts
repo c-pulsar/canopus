@@ -8,7 +8,8 @@ export enum RepresentationType {
   Resource = "Resource",
   Collection = "Collection",
   EditForm = "EditForm",
-  CreateForm = "CreateForm"
+  CreateForm = "CreateForm",
+  SearchForm = "SearchForm"
 }
 
 export interface Representation {
@@ -29,6 +30,9 @@ export interface RepresentationCollection extends Representation {
 export interface CreateFormRepresentation extends Representation {
 }
 
+export interface SearchFormRepresentation extends Representation {
+}
+
 export interface EditFormRepresentation extends Representation {
   _canDelete: boolean
 }
@@ -46,6 +50,15 @@ export function createFormOrUndefined(representation: Representation): CreateFor
   var createForm = representation as CreateFormRepresentation;
   if (createForm && createForm._type === RepresentationType.CreateForm) {
     return createForm;
+  }
+
+  return undefined;
+}
+
+export function searchFormOrUndefined(representation: Representation): SearchFormRepresentation | undefined {
+  var searchForm = representation as SearchFormRepresentation;
+  if (searchForm && searchForm._type === RepresentationType.SearchForm) {
+    return searchForm;
   }
 
   return undefined;

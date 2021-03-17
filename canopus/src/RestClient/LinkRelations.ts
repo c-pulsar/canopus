@@ -3,7 +3,8 @@ import { Link, Representation } from "./Representation";
 abstract class IanaLinkRelations {
   static readonly Manifest: string = "manifest";
   static readonly Collection: string = "collection";
-  static readonly About: string = "about"
+  static readonly About: string = "about";
+  static readonly Self: string = "self";
 }
 
 function linkRelationOrUndefined(representation: Representation, relation: string) : Link | undefined {
@@ -26,6 +27,15 @@ export function manifestLink(representation: Representation) : Link {
 
 export function collectionLink(representation: Representation) : Link {
   var result = linkRelationOrUndefined(representation, IanaLinkRelations.Collection);
+  if (result) {
+    return result;
+  }
+
+  throw new Error("Could not find 'collection' link relation");
+}
+
+export function selfLink(representation: Representation) : Link {
+  var result = linkRelationOrUndefined(representation, IanaLinkRelations.Self);
   if (result) {
     return result;
   }

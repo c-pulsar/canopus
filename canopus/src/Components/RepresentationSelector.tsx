@@ -1,10 +1,11 @@
 import React from "react";
-import { collectionOrUndefined, createFormOrUndefined, editFormOrUndefined, Representation } from "../RestClient/Representation";
+import { collectionOrUndefined, createFormOrUndefined, editFormOrUndefined, Representation, searchFormOrUndefined } from "../RestClient/Representation";
 import { RestApi } from "../RestClient/RestApi";
 import CreateFormRepresentationView from "./CreateFormRepresentationView";
 import EditFormRepresentationView from "./EditFormRepresentationView";
 import RepresentationCollectionView from "./RepresentationCollectionView";
 import RepresentationView from "./RepresentationView";
+import SearchFormRepresentationView from "./SearchFormRepresentationView";
 
 interface RepresentationSelectorProps {
   representation: Representation,
@@ -29,6 +30,14 @@ class RepresentationSelector extends React.Component<RepresentationSelectorProps
         api={this.props.api}
         onNavigate={this.props.onNavigate}
         representation={createForm} />;
+    }
+
+    var searchForm = searchFormOrUndefined(this.props.representation);
+    if (searchForm) {
+      return <SearchFormRepresentationView
+        api={this.props.api}
+        onNavigate={this.props.onNavigate}
+        representation={searchForm} />;
     }
 
     var editForm = editFormOrUndefined(this.props.representation);
