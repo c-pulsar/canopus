@@ -15,7 +15,6 @@ export interface Representation {
   _links: Link[],
   _type: RepresentationType
   _title: string,
-  _schema: string
 }
 
 export interface RepresentationCollectionItem {
@@ -28,13 +27,9 @@ export interface RepresentationCollection extends Representation {
 }
 
 export interface CreateFormRepresentation extends Representation {
-  _postLocation: string,
-  _parentLocation: string
 }
 
 export interface EditFormRepresentation extends Representation {
-  _postLocation: string,
-  _parentLocation: string,
   _canDelete: boolean
 }
 
@@ -49,10 +44,7 @@ export function collectionOrUndefined(representation: Representation): Represent
 
 export function createFormOrUndefined(representation: Representation): CreateFormRepresentation | undefined {
   var createForm = representation as CreateFormRepresentation;
-  if (createForm &&
-    createForm._type === RepresentationType.CreateForm &&
-    createForm._postLocation && createForm._parentLocation) {
-
+  if (createForm && createForm._type === RepresentationType.CreateForm) {
     return createForm;
   }
 
@@ -61,10 +53,7 @@ export function createFormOrUndefined(representation: Representation): CreateFor
 
 export function editFormOrUndefined(representation: Representation): EditFormRepresentation | undefined {
   var editForm = representation as EditFormRepresentation;
-  if (editForm &&
-    editForm._type === RepresentationType.EditForm &&
-    editForm._postLocation && editForm._parentLocation) {
-
+  if (editForm && editForm._type === RepresentationType.EditForm) {
     return editForm;
   }
 

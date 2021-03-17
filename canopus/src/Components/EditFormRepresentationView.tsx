@@ -7,6 +7,7 @@ import NavigationToolbar from "./NavigationToolbar";
 import Ajv from "ajv";
 import { PropertyDefinition, PropertyType } from "./PropertyDefinition";
 import { StringProperty } from "./StringProperty";
+import { aboutLink, manifestLink } from "../RestClient/LinkRelations";
 
 type EditFormRepresentationViewState = {
   schema: any,
@@ -30,7 +31,7 @@ class EditFormRepresentationView extends React.Component<
 
   componentDidMount() {
     this.props.api
-      .getAny(this.props.representation._schema)
+      .getAny(manifestLink(this.props.representation).href)
       .then(x => this.setState({ schema: x, forceValidation: false }));
   }
 
@@ -76,8 +77,8 @@ class EditFormRepresentationView extends React.Component<
     const isValid = validate(value);
     if (isValid) {
       this.props.api
-        .update(this.props.representation._postLocation, value)
-        .then(_ => this.props.onNavigate(this.props.representation._parentLocation));
+        .update(aboutLink(this.props.representation).href, value)
+        .then(_ => this.props.onNavigate(aboutLink(this.props.representation).href));
     } else {
       this.setState({ schema: this.state.schema, forceValidation: true });
     }
@@ -114,7 +115,7 @@ class EditFormRepresentationView extends React.Component<
                           <Button variant="danger" type="button">Delete</Button>
                         }
                         <Button variant="primary" type="button"
-                          onClick={x => this.props.onNavigate(this.props.representation._parentLocation)}>
+                          onClick={x => this.props.onNavigate(aboutLink(this.props.representation).href)}>
                           Cancel
                         </Button>
                       </ButtonGroup>

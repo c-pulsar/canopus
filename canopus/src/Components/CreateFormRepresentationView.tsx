@@ -7,6 +7,7 @@ import NavigationToolbar from "./NavigationToolbar";
 import Ajv from "ajv";
 import { PropertyDefinition, PropertyType } from "./PropertyDefinition";
 import { StringProperty } from "./StringProperty";
+import { collectionLink, manifestLink } from "../RestClient/LinkRelations";
 
 type CreateFormRepresentationViewState = {
   schema: any,
@@ -30,7 +31,7 @@ class CreateFormRepresentationView extends React.Component<
 
   componentDidMount() {
     this.props.api
-      .getAny(this.props.representation._schema)
+      .getAny(manifestLink(this.props.representation).href)
       .then(x => this.setState({ schema: x, forceValidation: false }));
   }
 
@@ -76,7 +77,7 @@ class CreateFormRepresentationView extends React.Component<
     const isValid = validate(value);
     if (isValid) {
       this.props.api
-        .create(this.props.representation._postLocation, value)
+        .create(collectionLink(this.props.representation).href, value)
         .then(location => this.props.onNavigate(location!));
     } else {
       this.setState({ schema: this.state.schema, forceValidation: true });
@@ -110,7 +111,7 @@ class CreateFormRepresentationView extends React.Component<
                       <ButtonGroup>
                         <Button variant="primary" type="submit" >Submit</Button>
                         <Button variant="primary" type="button" 
-                          onClick={x => this.props.onNavigate(this.props.representation._parentLocation)}>
+                          onClick={x => this.props.onNavigate(collectionLink(this.props.representation).href)}>
                           Cancel
                         </Button>
                       </ButtonGroup>

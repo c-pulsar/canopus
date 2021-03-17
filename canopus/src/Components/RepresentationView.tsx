@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
+import { manifestLink } from "../RestClient/LinkRelations";
 import { Representation } from "../RestClient/Representation";
 import { RestApi } from "../RestClient/RestApi";
 import NavigationToolbar from "./NavigationToolbar";
@@ -19,7 +20,7 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
 
   componentDidMount() {
     this.props.api
-      .getAny(this.props.representation._schema)
+      .getAny(manifestLink(this.props.representation).href)
       .then(x => this.setState({ schema: x }));
   }
 
