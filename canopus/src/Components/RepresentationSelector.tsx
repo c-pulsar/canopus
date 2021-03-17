@@ -45,7 +45,7 @@ class RepresentationSelector extends React.Component<RepresentationSelectorProps
       return <EditFormRepresentationView
         api={this.props.api}
         onNavigate={this.props.onNavigate}
-        representation={editForm} />;
+        formRepresentation={editForm} />;
     }
 
     return <RepresentationView

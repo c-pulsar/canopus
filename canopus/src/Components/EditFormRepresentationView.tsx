@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react";
 import { Button, ButtonGroup, Col, Container, Form, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
-import { EditFormRepresentation } from "../RestClient/Representation";
+import { EditFormRepresentation, Representation } from "../RestClient/Representation";
 import { RestApi } from "../RestClient/RestApi";
 import NavigationToolbar from "./NavigationToolbar";
 import Ajv from "ajv";
@@ -11,11 +11,12 @@ import { aboutLink, manifestLink } from "../RestClient/LinkRelations";
 
 type EditFormRepresentationViewState = {
   schema: any,
+  editedRepresentation: Representation,
   forceValidation: boolean
 }
 
 interface EditFormRepresentationViewProps {
-  representation: EditFormRepresentation,
+  formRepresentation: EditFormRepresentation,
   onNavigate: (uri: string) => void,
   api: RestApi
 }
@@ -30,12 +31,19 @@ class EditFormRepresentationView extends React.Component<
   }
 
   componentDidMount() {
+    let manifest: any = undefined;
     this.props.api
-      .getAny(manifestLink(this.props.representation).href)
-      .then(x => this.setState({ schema: x, forceValidation: false }));
+      .getAny(manifestLink(this.props.formRepresentation).href)
+      .then(x => manifest = x)
+      .then(_ => this.props.api.get(aboutLink(this.props.formRepresentation).href))
+      .then(x => this.setState({
+        schema: manifest,
+        editedRepresentation: x,
+        forceValidation: false
+      }));
   }
 
-  private schemaProperties(schema: any): JSX.Element[] {
+  private schemaProperties(schema: any, representation: Representation): JSX.Element[] {
 
     var result = [];
 
@@ -44,11 +52,8 @@ class EditFormRepresentationView extends React.Component<
       for (var key in schema.properties) {
         var propertySchema = schema.properties[key];
         if (propertySchema) {
-          var propertyDefinition = new PropertyDefinition(key, propertySchema);
-          if (propertyDefinition.isReadOnly()) {
-            break;
-          }
-
+          var propertyDefinition = new PropertyDefinition(
+            key, propertySchema, (representation as any)[key]);
           switch (propertyDefinition.type()) {
 
             case PropertyType.String:
@@ -77,8 +82,8 @@ class EditFormRepresentationView extends React.Component<
     const isValid = validate(value);
     if (isValid) {
       this.props.api
-        .update(aboutLink(this.props.representation).href, value)
-        .then(_ => this.props.onNavigate(aboutLink(this.props.representation).href));
+        .update(aboutLink(this.props.formRepresentation).href, value)
+        .then(_ => this.props.onNavigate(aboutLink(this.props.formRepresentation).href));
     } else {
       this.setState({ schema: this.state.schema, forceValidation: true });
     }
@@ -89,9 +94,9 @@ class EditFormRepresentationView extends React.Component<
 
     return (
       <Card border="primary" bg="secondary" className="text-center">
-        <Card.Header className="bg-primary" as="h5">{this.props.representation._title}</Card.Header>
+        <Card.Header className="bg-primary" as="h5">{this.props.formRepresentation._title}</Card.Header>
         <NavigationToolbar
-          links={this.props.representation._links}
+          links={this.props.formRepresentation._links}
           onNavigate={this.props.onNavigate} />
 
         <Container>
@@ -103,7 +108,7 @@ class EditFormRepresentationView extends React.Component<
                 {
                   this.state &&
                   this.state.schema &&
-                  this.schemaProperties(this.state.schema)
+                  this.schemaProperties(this.state.schema, this.state.editedRepresentation)
                 }
                 <Container>
                   <Row className="text-center">
@@ -111,11 +116,11 @@ class EditFormRepresentationView extends React.Component<
                       <ButtonGroup>
                         <Button variant="primary" type="submit" >Submit</Button>
                         {
-                          this.props.representation._canDelete &&
+                          this.props.formRepresentation._editEnabled &&
                           <Button variant="danger" type="button">Delete</Button>
                         }
                         <Button variant="primary" type="button"
-                          onClick={x => this.props.onNavigate(aboutLink(this.props.representation).href)}>
+                          onClick={x => this.props.onNavigate(aboutLink(this.props.formRepresentation).href)}>
                           Cancel
                         </Button>
                       </ButtonGroup>

@@ -36,9 +36,9 @@ export class StringProperty extends
     } else {
       if (this.validate.errors) {
         let errors = this.validate.errors.map(x => x.message!);
-        this.setState({ 
-          validationErrors: errors, 
-          isValid: false, 
+        this.setState({
+          validationErrors: errors,
+          isValid: false,
           isInvalid: true,
           showValidation: showValidation
         });
@@ -65,8 +65,13 @@ export class StringProperty extends
         <Form.Control
           name={this.props.propertyDefinition.key}
           type="text"
+          value={
+            this.props.propertyDefinition.value
+              ? this.props.propertyDefinition.value.toString()
+              : undefined
+          }
           isValid={this.state && this.state.isValid && (this.props.showValidation || this.state.showValidation)}
-          isInvalid={this.state && this.state.isInvalid && (this.props.showValidation || this.state.showValidation) }
+          isInvalid={this.state && this.state.isInvalid && (this.props.showValidation || this.state.showValidation)}
           onChange={this.handleChange} />
         {
           this.state && this.state.validationErrors.length > 0 && (this.props.showValidation || this.state.showValidation) &&

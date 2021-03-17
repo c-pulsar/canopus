@@ -4,7 +4,10 @@ export enum PropertyType {
 }
 
 export class PropertyDefinition {
-  constructor(public key: string, public propertySchema: any) {
+  constructor(
+    public key: string,
+    public propertySchema: any,
+    public value?: any) {
   }
 
   titleOrDefault(): string {
