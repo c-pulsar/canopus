@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, EventHandler } from "react";
+import React, { ChangeEvent } from "react";
 import { Form } from "react-bootstrap";
 import { PropertyDefinition } from "./PropertyDefinition";
 import Ajv from "ajv";
@@ -65,13 +65,13 @@ export class StringProperty extends
         <Form.Control
           name={this.props.propertyDefinition.key}
           type="text"
-          isValid={this.state && this.state.isValid}
+          isValid={this.state && this.state.isValid && (this.props.showValidation || this.state.showValidation)}
           isInvalid={this.state && this.state.isInvalid && (this.props.showValidation || this.state.showValidation) }
           onChange={this.handleChange} />
         {
           this.state && this.state.validationErrors.length > 0 && (this.props.showValidation || this.state.showValidation) &&
           this.state.validationErrors.map(x =>
-            <Form.Control.Feedback type="invalid">{x}</Form.Control.Feedback>)
+            <Form.Control.Feedback type="invalid">Not valid ({x}).</Form.Control.Feedback>)
         }
       </Form.Group>
     );

@@ -28,7 +28,8 @@ export interface RepresentationCollection extends Representation {
 }
 
 export interface CreateFormRepresentation extends Representation {
-  _postLocation: string
+  _postLocation: string,
+  _parentLocation: string
 }
 
 export function collectionOrUndefined(representation: Representation): RepresentationCollection | undefined {
@@ -42,8 +43,11 @@ export function collectionOrUndefined(representation: Representation): Represent
 
 export function createFormOrUndefined(representation: Representation): CreateFormRepresentation | undefined {
   var createForm = representation as CreateFormRepresentation;
-  if (createForm && createForm._type === RepresentationType.CreateForm && createForm._postLocation) {
-    return createForm;
+  if (createForm && 
+    createForm._type === RepresentationType.CreateForm && 
+    createForm._postLocation && createForm._parentLocation) {
+    
+      return createForm;
   }
 
   return undefined;

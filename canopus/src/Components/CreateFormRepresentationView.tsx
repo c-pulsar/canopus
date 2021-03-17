@@ -44,6 +44,10 @@ class CreateFormRepresentationView extends React.Component<
         var propertySchema = schema.properties[key];
         if (propertySchema) {
           var propertyDefinition = new PropertyDefinition(key, propertySchema);
+          if (propertyDefinition.isReadOnly()) {
+            break;
+          }
+
           switch (propertyDefinition.type()) {
 
             case PropertyType.String:
@@ -105,7 +109,10 @@ class CreateFormRepresentationView extends React.Component<
                     <Col>
                       <ButtonGroup>
                         <Button variant="primary" type="submit" >Submit</Button>
-                        <Button variant="primary" type="button" onClick={window.history.back} >Cancel</Button>
+                        <Button variant="primary" type="button" 
+                          onClick={x => this.props.onNavigate(this.props.representation._parentLocation)}>
+                          Cancel
+                        </Button>
                       </ButtonGroup>
                     </Col>
                   </Row>

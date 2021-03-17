@@ -22,4 +22,12 @@ export class PropertyDefinition {
       default: return PropertyType.Undefined;
     }
   }
+
+  isReadOnly(): boolean {
+    if (this.propertySchema["x-readOnly"]) {
+      return true;
+    }
+
+    return false;
+  }
 }
