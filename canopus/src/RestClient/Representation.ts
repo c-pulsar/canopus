@@ -34,7 +34,7 @@ export interface SearchFormRepresentation extends Representation {
 }
 
 export interface EditFormRepresentation extends Representation {
-  _editEnabled: boolean
+  _deleteEnabled: boolean
 }
 
 export function collectionOrUndefined(representation: Representation): RepresentationCollection | undefined {

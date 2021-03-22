@@ -8,9 +8,11 @@ import Ajv from "ajv";
 import { PropertyDefinition, PropertyType } from "./PropertyDefinition";
 import { StringProperty } from "./StringProperty";
 import { aboutLink, manifestLink } from "../RestClient/LinkRelations";
+import ConfirmationModal from "./ConfirmationModal";
 
 type EditFormRepresentationViewState = {
   schema: any,
+  showModal: boolean,
   editedRepresentation: Representation,
   forceValidation: boolean
 }
@@ -28,6 +30,8 @@ class EditFormRepresentationView extends React.Component<
   constructor(props: EditFormRepresentationViewProps) {
     super(props);
     this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.showModal = this.showModal.bind(this);
+    this.onDeleteConfirmed = this.onDeleteConfirmed.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +43,7 @@ class EditFormRepresentationView extends React.Component<
       .then(x => this.setState({
         schema: manifest,
         editedRepresentation: x,
+        showModal: false,
         forceValidation: false
       }));
   }
@@ -85,8 +90,24 @@ class EditFormRepresentationView extends React.Component<
         .update(aboutLink(this.props.formRepresentation).href, value)
         .then(_ => this.props.onNavigate(aboutLink(this.props.formRepresentation).href));
     } else {
-      this.setState({ schema: this.state.schema, forceValidation: true });
+      this.setState({ schema: this.state.schema, forceValidation: true, showModal: false });
     }
+  }
+
+  private showModal(show: boolean) {
+    var newState = {
+      schema: this.state.schema,
+      editedRepresentation: this.state.editedRepresentation,
+      forceValidation: this.state.forceValidation,
+      showModal: show
+    };
+
+    this.setState(newState);
+  }
+
+  private onDeleteConfirmed() {
+    this.showModal(false);
+    alert('Confirmed!')
   }
 
   //https://www.learnwithjason.dev/blog/get-form-values-as-json
@@ -98,6 +119,13 @@ class EditFormRepresentationView extends React.Component<
         <NavigationToolbar
           links={this.props.formRepresentation._links}
           onNavigate={this.props.onNavigate} />
+        <ConfirmationModal
+          show={this.state && this.state.showModal}
+          title="Confirmation"
+          paragraphHeading="Delete Operation"
+          question="This operation cannot be undone. Click confirm button to continue or cancel"
+          onCancel={() => this.showModal(false)} 
+          onConfirm={this.onDeleteConfirmed} />
 
         <Container>
           <Row><Col><br /></Col></Row>
@@ -116,8 +144,10 @@ class EditFormRepresentationView extends React.Component<
                       <ButtonGroup>
                         <Button variant="primary" type="submit" >Submit</Button>
                         {
-                          this.props.formRepresentation._editEnabled &&
-                          <Button variant="danger" type="button">Delete</Button>
+                          this.props.formRepresentation._deleteEnabled &&
+                          <Button variant="danger" type="button" onClick={() => this.showModal(true)}>
+                            Delete
+                          </Button>
                         }
                         <Button variant="primary" type="button"
                           onClick={x => this.props.onNavigate(aboutLink(this.props.formRepresentation).href)}>
