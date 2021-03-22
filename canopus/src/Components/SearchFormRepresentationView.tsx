@@ -7,7 +7,7 @@ import NavigationToolbar from "./NavigationToolbar";
 import Ajv from "ajv";
 import { PropertyDefinition, PropertyType } from "./PropertyDefinition";
 import { StringProperty } from "./StringProperty";
-import { collectionLink, manifestLink, selfLink } from "../RestClient/LinkRelations";
+import { collectionUri, manifestUri, selfUri } from "../RestClient/LinkRelations";
 
 type SearchFormRepresentationViewState = {
   schema: any,
@@ -31,7 +31,7 @@ class SearchFormRepresentationView extends React.Component<
 
   componentDidMount() {
     this.props.api
-      .getAny(manifestLink(this.props.representation).href)
+      .getAny(manifestUri(this.props.representation))
       .then(x => this.setState({ schema: x, forceValidation: false }));
   }
 
@@ -77,7 +77,7 @@ class SearchFormRepresentationView extends React.Component<
     const isValid = validate(value);
     if (isValid) {
       this.props.api
-        .create(selfLink(this.props.representation).href, value)
+        .create(selfUri(this.props.representation), value)
         .then(location => this.props.onNavigate(location!));
     } else {
       this.setState({ schema: this.state.schema, forceValidation: true });
@@ -111,7 +111,7 @@ class SearchFormRepresentationView extends React.Component<
                       <ButtonGroup>
                         <Button variant="primary" type="submit" >Submit</Button>
                         <Button variant="primary" type="button"
-                          onClick={x => this.props.onNavigate(collectionLink(this.props.representation).href)}>
+                          onClick={x => this.props.onNavigate(collectionUri(this.props.representation))}>
                           Cancel
                         </Button>
                       </ButtonGroup>

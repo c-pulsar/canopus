@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
-import { manifestLink } from "../RestClient/LinkRelations";
+import { imageUriOrUndefined, manifestUri } from "../RestClient/LinkRelations";
 import { Representation } from "../RestClient/Representation";
 import { RestApi } from "../RestClient/RestApi";
 import NavigationToolbar from "./NavigationToolbar";
@@ -21,7 +21,7 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
 
   componentDidMount() {
     this.props.api
-      .getAny(manifestLink(this.props.representation).href)
+      .getAny(manifestUri(this.props.representation))
       .then(x => this.setState({ schema: x }));
   }
 
@@ -65,6 +65,9 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
   }
 
   render() {
+
+    var imageUri = imageUriOrUndefined(this.props.representation);
+
     return (
       <Card border="primary" bg="primary" className="text-center">
         <Card.Header as="h5">{this.props.representation._title}</Card.Header>
@@ -73,13 +76,13 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
           onNavigate={this.props.onNavigate} />
         <ListGroup className="list-group-flush">
           {
-            this.props.representation._image &&
+            imageUri &&
             <ListGroup.Item key="img" variant="primary">
               <Figure>
                 <Figure.Image
                   width={200}
                   height={200}
-                  src={this.props.representation._image}
+                  src={imageUri}
                 />
               </Figure>
             </ListGroup.Item>

@@ -7,7 +7,7 @@ import NavigationToolbar from "./NavigationToolbar";
 import Ajv from "ajv";
 import { PropertyDefinition, PropertyType } from "./PropertyDefinition";
 import { StringProperty } from "./StringProperty";
-import { aboutLink, collectionLink, manifestLink, selfLink } from "../RestClient/LinkRelations";
+import { aboutUri, collectionUri, manifestUri, selfUri } from "../RestClient/LinkRelations";
 import ConfirmationModal from "./ConfirmationModal";
 
 type EditFormRepresentationViewState = {
@@ -37,9 +37,9 @@ class EditFormRepresentationView extends React.Component<
   componentDidMount() {
     let manifest: any = undefined;
     this.props.api
-      .getAny(manifestLink(this.props.formRepresentation).href)
+      .getAny(manifestUri(this.props.formRepresentation))
       .then(x => manifest = x)
-      .then(_ => this.props.api.get(aboutLink(this.props.formRepresentation).href))
+      .then(_ => this.props.api.get(aboutUri(this.props.formRepresentation)))
       .then(x => this.setState({
         schema: manifest,
         editedRepresentation: x,
@@ -87,8 +87,8 @@ class EditFormRepresentationView extends React.Component<
     const isValid = validate(value);
     if (isValid) {
       this.props.api
-        .update(aboutLink(this.props.formRepresentation).href, value)
-        .then(_ => this.props.onNavigate(aboutLink(this.props.formRepresentation).href));
+        .update(aboutUri(this.props.formRepresentation), value)
+        .then(_ => this.props.onNavigate(aboutUri(this.props.formRepresentation)));
     } else {
       this.setState({ schema: this.state.schema, forceValidation: true, showModal: false });
     }
@@ -108,8 +108,8 @@ class EditFormRepresentationView extends React.Component<
   private onDeleteConfirmed() {
     this.showModal(false);
     this.props.api
-      .delete(selfLink(this.state.editedRepresentation).href)
-      .then(() => this.props.onNavigate(collectionLink(this.state.editedRepresentation).href));
+      .delete(selfUri(this.state.editedRepresentation))
+      .then(() => this.props.onNavigate(collectionUri(this.state.editedRepresentation)));
   }
 
   //https://www.learnwithjason.dev/blog/get-form-values-as-json
@@ -152,7 +152,7 @@ class EditFormRepresentationView extends React.Component<
                           </Button>
                         }
                         <Button variant="primary" type="button"
-                          onClick={x => this.props.onNavigate(aboutLink(this.props.formRepresentation).href)}>
+                          onClick={x => this.props.onNavigate(aboutUri(this.props.formRepresentation))}>
                           Cancel
                         </Button>
                       </ButtonGroup>

@@ -7,7 +7,7 @@ import React from "react";
 import { Link, Representation } from '../RestClient/Representation';
 import RepresentationSelector from './RepresentationSelector'
 import { RestApi } from '../RestClient/RestApi'
-import { IanaLinkRelations } from '../RestClient/LinkRelations'
+import { LinkRelations } from '../RestClient/LinkRelations'
 
 type RootContainerState = {
   selectedRepresentation?: Representation
@@ -44,8 +44,9 @@ class RootContainer extends React.Component<RootContainerProps, RootContainerSta
 
   private isVisible(link: Link): boolean {
     return [ 
-      IanaLinkRelations.Self,
-      IanaLinkRelations.Manifest ].find(x => x === link.rel) === undefined;
+      LinkRelations.Self,
+      LinkRelations.Image,
+      LinkRelations.Manifest ].find(x => x === link.rel) === undefined;
   }
 
   render() {

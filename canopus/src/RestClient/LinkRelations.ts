@@ -1,10 +1,11 @@
 import { Link, Representation } from "./Representation";
 
-export abstract class IanaLinkRelations {
+export abstract class LinkRelations {
   static readonly Manifest: string = "manifest";
   static readonly Collection: string = "collection";
   static readonly About: string = "about";
   static readonly Self: string = "self";
+  static readonly Image: string = "image";
 }
 
 function linkRelationOrUndefined(representation: Representation, relation: string) : Link | undefined {
@@ -16,37 +17,46 @@ function linkRelationOrUndefined(representation: Representation, relation: strin
   return undefined;
 }
 
-export function manifestLink(representation: Representation) : Link {
-  var result = linkRelationOrUndefined(representation, IanaLinkRelations.Manifest);
+export function imageUriOrUndefined(representation: Representation) : string | undefined {
+  var result = linkRelationOrUndefined(representation, LinkRelations.Image);
   if (result) {
-    return result;
+    return result.href;
+  }
+
+  return undefined;
+} 
+
+export function manifestUri(representation: Representation) : string {
+  var result = linkRelationOrUndefined(representation, LinkRelations.Manifest);
+  if (result) {
+    return result.href;
   }
 
   throw new Error("Could not find 'manifest' link relation");
 } 
 
-export function collectionLink(representation: Representation) : Link {
-  var result = linkRelationOrUndefined(representation, IanaLinkRelations.Collection);
+export function collectionUri(representation: Representation) : string {
+  var result = linkRelationOrUndefined(representation, LinkRelations.Collection);
   if (result) {
-    return result;
+    return result.href;
   }
 
   throw new Error("Could not find 'collection' link relation");
 }
 
-export function selfLink(representation: Representation) : Link {
-  var result = linkRelationOrUndefined(representation, IanaLinkRelations.Self);
+export function selfUri(representation: Representation) : string {
+  var result = linkRelationOrUndefined(representation, LinkRelations.Self);
   if (result) {
-    return result;
+    return result.href;
   }
 
   throw new Error("Could not find 'collection' link relation");
 }
 
-export function aboutLink(representation: Representation) : Link {
-  var result = linkRelationOrUndefined(representation, IanaLinkRelations.About);
+export function aboutUri(representation: Representation) : string {
+  var result = linkRelationOrUndefined(representation, LinkRelations.About);
   if (result) {
-    return result;
+    return result.href;
   }
 
   throw new Error("Could not find 'about' link relation");

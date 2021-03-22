@@ -15,8 +15,7 @@ export enum RepresentationType {
 export interface Representation {
   _links: Link[],
   _type: RepresentationType
-  _title: string,
-  _image?: string,
+  _title: string
 }
 
 export interface RepresentationCollectionItem {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, ButtonGroup, Col, Container, Row } from "react-bootstrap";
-import { IanaLinkRelations } from "../RestClient/LinkRelations";
+import { LinkRelations } from "../RestClient/LinkRelations";
 import { Link } from "../RestClient/Representation";
 
 interface NavigationToolbarProps {
@@ -12,8 +12,9 @@ class NavigationToolbar extends React.Component<NavigationToolbarProps> {
 
   private isVisible(link: Link): boolean {
     return [ 
-      IanaLinkRelations.Self,
-      IanaLinkRelations.Manifest ].find(x => x === link.rel) === undefined;
+      LinkRelations.Self,
+      LinkRelations.Image,
+      LinkRelations.Manifest ].find(x => x === link.rel) === undefined;
   }
 
   render() {
