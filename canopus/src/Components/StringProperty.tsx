@@ -75,8 +75,8 @@ export class StringProperty extends
           onChange={this.handleChange} />
         {
           this.state && this.state.validationErrors.length > 0 && (this.props.showValidation || this.state.showValidation) &&
-          this.state.validationErrors.map(x =>
-            <Form.Control.Feedback type="invalid">Not valid ({x}).</Form.Control.Feedback>)
+          this.state.validationErrors.map((x, idx) =>
+            <Form.Control.Feedback key={idx} type="invalid">Not valid ({x}).</Form.Control.Feedback>)
         }
       </Form.Group>
     );
