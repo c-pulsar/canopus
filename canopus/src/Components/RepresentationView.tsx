@@ -80,8 +80,8 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
             <ListGroup.Item key="img" variant="primary">
               <Figure>
                 <Figure.Image
-                  width={200}
-                  height={200}
+                  width={300}
+                  height={300}
                   src={imageUri}
                 />
               </Figure>
