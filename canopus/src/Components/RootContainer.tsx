@@ -4,9 +4,10 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import React from "react";
-import { Representation } from '../RestClient/Representation';
+import { Link, Representation } from '../RestClient/Representation';
 import RepresentationSelector from './RepresentationSelector'
 import { RestApi } from '../RestClient/RestApi'
+import { IanaLinkRelations } from '../RestClient/LinkRelations'
 
 type RootContainerState = {
   selectedRepresentation?: Representation
@@ -41,6 +42,12 @@ class RootContainer extends React.Component<RootContainerProps, RootContainerSta
       .then(x => this.setState({ selectedRepresentation: x }));
   }
 
+  private isVisible(link: Link): boolean {
+    return [ 
+      IanaLinkRelations.Self,
+      IanaLinkRelations.Manifest ].find(x => x === link.rel) === undefined;
+  }
+
   render() {
     return (
       <Container fluid>
@@ -51,7 +58,7 @@ class RootContainer extends React.Component<RootContainerProps, RootContainerSta
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto" onSelect={this.handleSelect}> {
-                  this.props.rootRepresentation._links.map(x =>
+                  this.props.rootRepresentation._links.filter(this.isVisible).map(x =>
                     <Nav.Link key={x.href} eventKey={x.href} href={`#${x.rel}`}>{x.title}</Nav.Link>)
                 }
                 </Nav>

@@ -1,6 +1,6 @@
 import { Link, Representation } from "./Representation";
 
-abstract class IanaLinkRelations {
+export abstract class IanaLinkRelations {
   static readonly Manifest: string = "manifest";
   static readonly Collection: string = "collection";
   static readonly About: string = "about";

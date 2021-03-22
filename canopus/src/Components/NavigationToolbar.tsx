@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, ButtonGroup, Col, Container, Row } from "react-bootstrap";
+import { IanaLinkRelations } from "../RestClient/LinkRelations";
 import { Link } from "../RestClient/Representation";
 
 interface NavigationToolbarProps {
@@ -9,6 +10,12 @@ interface NavigationToolbarProps {
 
 class NavigationToolbar extends React.Component<NavigationToolbarProps> {
 
+  private isVisible(link: Link): boolean {
+    return [ 
+      IanaLinkRelations.Self,
+      IanaLinkRelations.Manifest ].find(x => x === link.rel) === undefined;
+  }
+
   render() {
     return (
       <Container fluid>
@@ -17,7 +24,7 @@ class NavigationToolbar extends React.Component<NavigationToolbarProps> {
           <Col>
             <ButtonGroup>
               {
-                this.props.links.map(x =>
+                this.props.links.filter(this.isVisible).map(x =>
                   <Button key={x.href} href={`#${x.rel}`} variant="primary" onClick={() => this.props.onNavigate(x.href)}>
                     {x.title}
                   </Button>)
