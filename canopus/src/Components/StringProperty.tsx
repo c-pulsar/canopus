@@ -5,6 +5,7 @@ import Ajv from "ajv";
 
 type StringPropertyState = {
   validationErrors: string[],
+  propertyValue: string
   isValid: boolean,
   isInvalid: boolean,
   showValidation: boolean
@@ -29,10 +30,10 @@ export class StringProperty extends
     this.validate = ajv.compile(this.props.propertyDefinition.propertySchema);
   }
 
-  private runValidation(value: any, showValidation: boolean): void {
+  private runValidation(value: string, showValidation: boolean): void {
     const isValid = this.validate(value);
     if (isValid) {
-      this.setState({ validationErrors: [], isValid: true, isInvalid: false });
+      this.setState({ validationErrors: [], isValid: true, isInvalid: false, propertyValue: value });
     } else {
       if (this.validate.errors) {
         let errors = this.validate.errors.map(x => x.message!);
@@ -40,20 +41,23 @@ export class StringProperty extends
           validationErrors: errors,
           isValid: false,
           isInvalid: true,
-          showValidation: showValidation
+          showValidation: showValidation,
+          propertyValue: value
         });
       }
     }
   }
 
   private handleChange(event: ChangeEvent<any>): void {
+    event.preventDefault(); 
     if (event && event.currentTarget) {
       this.runValidation(event.currentTarget.value, true);
     }
   }
 
   componentDidMount() {
-    this.runValidation("", false);
+    var value = this.props.propertyDefinition.value;
+    this.runValidation(value, false);
   }
 
   render() {
@@ -66,9 +70,9 @@ export class StringProperty extends
           name={this.props.propertyDefinition.key}
           type="text"
           value={
-            this.props.propertyDefinition.value
-              ? this.props.propertyDefinition.value.toString()
-              : undefined
+            this.state && this.state.propertyValue
+              ? this.state.propertyValue
+              : ""
           }
           isValid={this.state && this.state.isValid && (this.props.showValidation || this.state.showValidation)}
           isInvalid={this.state && this.state.isInvalid && (this.props.showValidation || this.state.showValidation)}
