@@ -5,6 +5,7 @@ import { manifestLink } from "../RestClient/LinkRelations";
 import { Representation } from "../RestClient/Representation";
 import { RestApi } from "../RestClient/RestApi";
 import NavigationToolbar from "./NavigationToolbar";
+import { Figure } from "react-bootstrap";
 
 type RepresentationViewState = {
   schema: any
@@ -67,10 +68,22 @@ class RepresentationView extends React.Component<RepresentationViewProps, Repres
     return (
       <Card border="primary" bg="primary" className="text-center">
         <Card.Header as="h5">{this.props.representation._title}</Card.Header>
-        <NavigationToolbar 
-          links={this.props.representation._links} 
+        <NavigationToolbar
+          links={this.props.representation._links}
           onNavigate={this.props.onNavigate} />
         <ListGroup className="list-group-flush">
+          {
+            this.props.representation._image &&
+            <ListGroup.Item key="img" variant="primary">
+              <Figure>
+                <Figure.Image
+                  width={200}
+                  height={200}
+                  src={this.props.representation._image}
+                />
+              </Figure>
+            </ListGroup.Item>
+          }
           {
             this.state &&
             this.state.schema &&

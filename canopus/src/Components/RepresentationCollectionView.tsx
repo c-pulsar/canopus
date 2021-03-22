@@ -1,4 +1,5 @@
 import React from "react";
+import { Col, Container, Image, Row } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import { RepresentationCollection } from "../RestClient/Representation";
@@ -21,14 +22,24 @@ class RepresentationCollectionView extends React.Component<RepresentationCollect
     return (
       <Card border="primary" bg="primary" className="text-center" >
         <Card.Header as="h5">{this.props.collection._title}</Card.Header>
-        <NavigationToolbar 
-          links={this.props.collection._links} 
+        <NavigationToolbar
+          links={this.props.collection._links}
           onNavigate={this.props.onNavigate} />
-        <ListGroup className="list-group-flush" onSelect={this.handleSelect}>
+        <ListGroup onSelect={this.handleSelect}>
           {
             this.props.collection._items.map(x =>
               <ListGroup.Item key={x.href} href={`#${x.title}`} action eventKey={x.href} variant="primary">
-                {x.title}
+
+                <Container>
+                  <Row style={{ justifyContent: "center", alignItems: "center" }}>
+                    <Col className="text-right">
+                      <Image thumbnail src={x.image} height={100} width={100} />
+                    </Col>
+                    <Col className="text-left">
+                      {x.title}
+                    </Col>
+                  </Row>
+                </Container>
               </ListGroup.Item>)
           }
         </ListGroup>

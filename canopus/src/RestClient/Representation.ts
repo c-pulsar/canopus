@@ -16,11 +16,13 @@ export interface Representation {
   _links: Link[],
   _type: RepresentationType
   _title: string,
+  _image?: string,
 }
 
 export interface RepresentationCollectionItem {
   href: string,
-  title: string
+  title: string,
+  image?: string
 }
 
 export interface RepresentationCollection extends Representation {
