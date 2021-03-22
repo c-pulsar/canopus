@@ -50,4 +50,11 @@ export class RestClient implements RestApi {
       .then(validateStatus)
       .then(() => Promise.resolve());
   }
+
+  delete(uri: string) : Promise<void> {
+    return this.authHandler
+      .delete(uri)
+      .then(validateStatus)
+      .then(() => Promise.resolve());
+  }
 }

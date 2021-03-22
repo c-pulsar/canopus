@@ -1,9 +1,10 @@
 export interface HttpClient {
   get(uri: string, requestHeaders: HttpHeader[]): Promise<HttpResponse>;
   post(uri: string, body: string, requestHeaders: HttpHeader[]): Promise<HttpResponse>;
+  delete(uri: string, requestHeaders: HttpHeader[]): Promise<HttpResponse>;
 }
 
-export type HttpMethod = "GET" | "POST";
+export type HttpMethod = "GET" | "POST" | "DELETE";
 
 export interface HttpHeader {
   key: string,

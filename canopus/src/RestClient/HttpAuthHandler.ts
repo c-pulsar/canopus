@@ -53,4 +53,9 @@ export class HttpAuthHandler {
     return this.handleAndRetry(() =>
       this.httpClient.post(uri, body, this.makeDefaultPostHttpHeaders(this.options)));
   }
+
+  delete(uri: string): Promise<HttpResponse> {
+    return this.handleAndRetry(() =>
+      this.httpClient.delete(uri, this.makeDefaultPostHttpHeaders(this.options)));
+  }
 };

@@ -28,4 +28,9 @@ export class FetchHttpClient implements HttpClient {
     return fetch(uri, this.makeRequest('POST', requestHeaders, body))
       .then(response => this.makeHttpResponse(uri, 'POST', response));
   }
+
+  delete(uri: string, requestHeaders: HttpHeader[]): Promise<HttpResponse> {
+    return fetch(uri, this.makeRequest('DELETE', requestHeaders, undefined))
+      .then(response => this.makeHttpResponse(uri, 'DELETE', response));
+  }
 }

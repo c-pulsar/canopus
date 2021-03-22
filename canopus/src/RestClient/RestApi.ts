@@ -5,5 +5,6 @@ export interface RestApi {
   getAny(uri: string): Promise<any>;
   create(uri: string, representation: any) : Promise<string | undefined>;
   update(uri: string, representation: any) : Promise<void>;
+  delete(uri: string) : Promise<void>;
   relation(rel: string, representation: Representation): Promise<Representation>;
 }

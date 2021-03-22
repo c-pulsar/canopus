@@ -7,7 +7,7 @@ import NavigationToolbar from "./NavigationToolbar";
 import Ajv from "ajv";
 import { PropertyDefinition, PropertyType } from "./PropertyDefinition";
 import { StringProperty } from "./StringProperty";
-import { aboutLink, manifestLink } from "../RestClient/LinkRelations";
+import { aboutLink, collectionLink, manifestLink, selfLink } from "../RestClient/LinkRelations";
 import ConfirmationModal from "./ConfirmationModal";
 
 type EditFormRepresentationViewState = {
@@ -107,7 +107,9 @@ class EditFormRepresentationView extends React.Component<
 
   private onDeleteConfirmed() {
     this.showModal(false);
-    alert('Confirmed!')
+    this.props.api
+      .delete(selfLink(this.state.editedRepresentation).href)
+      .then(() => this.props.onNavigate(collectionLink(this.state.editedRepresentation).href));
   }
 
   //https://www.learnwithjason.dev/blog/get-form-values-as-json
