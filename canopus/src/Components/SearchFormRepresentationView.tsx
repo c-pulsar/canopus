@@ -52,11 +52,11 @@ class SearchFormRepresentationView extends React.Component<
           switch (propertyDefinition.type()) {
 
             case PropertyType.String:
-              result.push(<StringProperty propertyDefinition={propertyDefinition} showValidation={this.state.forceValidation} />);
+              result.push(<StringProperty key={propertyDefinition.key} propertyDefinition={propertyDefinition} showValidation={this.state.forceValidation} />);
               break;
 
             default:
-              result.push(<StringProperty propertyDefinition={propertyDefinition} showValidation={this.state.forceValidation} />);
+              result.push(<StringProperty key={propertyDefinition.key} propertyDefinition={propertyDefinition} showValidation={this.state.forceValidation} />);
               break;
           }
         }
